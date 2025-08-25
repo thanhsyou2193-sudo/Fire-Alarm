@@ -1,118 +1,126 @@
-🔥 IoT Fire Alarm System with ESP32
+# 🔥 IoT Fire Alarm System with ESP32
 
-This project is a smart IoT-based fire alarm system powered by ESP32.
-It continuously monitors smoke, gas, flame, temperature, and humidity and provides real-time alerts via a web dashboard.
-When smoke, gas, or fire is detected, a buzzer alarm is triggered to warn immediately.
+---
 
-🌍 Why IoT Fire Alarm?
+# 🌍 Why Choose an IoT Fire Alarm?
 
-Traditional fire alarms only trigger local alerts.
-This IoT system allows you to:
-✅ Monitor multiple sensors in real time
-✅ Access the dashboard from any device on the same network
-✅ Get early warnings with buzzer alerts
-✅ Customize thresholds for different environments (home, lab, factory)
+Traditional fire alarms only trigger local alerts.  
+**This IoT system enables:**
+- 📊 **Real-time, remote monitoring** of multiple sensors
+- 🌐 **Dashboard access** from any device on your network
+- ⏰ **Early warnings** via buzzer & web dashboard
+- ⚙️ **Customizable detection thresholds** for different environments (home, lab, factory)
 
-🚀 Key Features
+---
 
-📡 IoT-enabled dashboard accessible via browser
+# 🚀 Key Features
 
-🌡 Temperature & 💧 Humidity monitoring (DHT11)
+- **📡 IoT-enabled dashboard** accessible from any browser
+- **🌡 Temperature** & **💧 Humidity** monitoring (DHT11 sensor)
+- **💨 Smoke** & **⚗ Gas** detection (MQ-series sensors)
+- **🔥 Flame** detection (IR sensor)
+- **🎨 Modern UI:** Colorful gradient background & clean sensor display
+- **🔔 Smart buzzer:** Immediate alarm on danger detection
+- **⚙️ Adjustable thresholds** for tailored safety
 
-💨 Smoke & ⚗ Gas detection (MQ sensors)
+---
 
-🔥 Flame detection (IR sensor)
+# 🛠 Hardware Requirements
 
-🎨 Modern UI with colorful background + clean sensor box
+| Component               | Description                             |
+|-------------------------|-----------------------------------------|
+| **ESP32**               | Main IoT controller with WiFi           |
+| **MQ-135 Sensor**       | Detects smoke & harmful gases           |
+| **MQ Gas Sensor**       | Detects flammable gases (LPG, CO, etc.) |
+| **Flame Sensor**        | Detects infrared flame light            |
+| **DHT11 Sensor**        | Measures temperature & humidity         |
+| **Active Buzzer**       | Alarm sound when fire detected          |
+| **Breadboard & Jumper Wires** | For connections                  |
 
-🔔 Smart buzzer alert when danger detected
+---
 
-⚙️ Adjustable detection thresholds for different conditions
+# ⚡ Pin Configuration
 
-🛠 Hardware Requirements
-Component	Description
-ESP32	Main IoT controller with WiFi
-MQ-135 Sensor	Detects smoke & harmful gases
-MQ Gas Sensor	Detects flammable gases (LPG, CO, etc.)
-Flame Sensor	Detects infrared flame light
-DHT11 Sensor	Measures temperature & humidity
-Active Buzzer	Alarm sound when fire detected
-Breadboard & Jumper Wires	For connections
-⚡ Pin Configuration
-Component	ESP32 Pin
-MQ-135 (Smoke)	GPIO 35
-MQ Gas Sensor	GPIO 34
-Flame Sensor	GPIO 32
-DHT11 Data	GPIO 27
-Buzzer	GPIO 26
-VCC	3.3V / 5V
-GND	GND
-📡 Setup Instructions
+| Component         | ESP32 Pin |
+|-------------------|-----------|
+| **MQ-135 (Smoke)**| GPIO 35   |
+| **MQ Gas Sensor** | GPIO 34   |
+| **Flame Sensor**  | GPIO 32   |
+| **DHT11 Data**    | GPIO 27   |
+| **Buzzer**        | GPIO 26   |
+| **VCC**           | 3.3V/5V   |
+| **GND**           | GND       |
 
-Install Arduino IDE or PlatformIO.
+---
 
-Install required libraries:
+# 📡 Setup Instructions
 
-DHT sensor library (Adafruit)
+1. **Install** [Arduino IDE](https://www.arduino.cc/en/software) or [PlatformIO](https://platformio.org/).
+2. **Install required libraries:**
+   - [Adafruit DHT sensor library](https://github.com/adafruit/DHT-sensor-library)
+   - ESP32 WiFi (built-in)
+   - [WebServer library for ESP32](https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer)
+3. **Set your WiFi credentials** in the code:
+   ```cpp
+   const char* ssid = "YOUR_WIFI_NAME";
+   const char* password = "YOUR_WIFI_PASSWORD";
+   ```
+4. **Upload the code** to your ESP32.
+5. Open **Serial Monitor** → note ESP32’s IP Address.
+6. Open your browser and go to: `http://<ESP32_IP>` to access the dashboard.
 
-ESP32 WiFi (built-in)
+---
 
-WebServer (ESP32 library)
+# 🌐 Web Dashboard UI
 
-Open the code and set your WiFi credentials:
+- **Colorful gradient background** 🌈
+- **White sensor box** with all values neatly displayed
+- **Live values** for:
+  - 🌡 Temperature
+  - 💧 Humidity
+  - 💨 Smoke
+  - ⚗ Gas
+  - 🔥 Flame
 
-const char* ssid = "YOUR_WIFI_NAME";
-const char* password = "YOUR_WIFI_PASSWORD";
+**When fire/smoke/gas is detected:**
+- ⚠️ Status changes to **ALERT**
+- 🔔 Buzzer starts beeping
 
+---
 
-Upload the code to your ESP32.
+# 📊 Adjustable Thresholds
 
-Open Serial Monitor → copy ESP32’s IP Address.
+Customize inside your code:
 
-Open a browser → enter http://<ESP32_IP> to access the dashboard.
+```cpp
+const int smokeMargin = 200; // smoke detection
+const int gasMargin   = 260; // gas detection
+const int fireMargin  = 300; // fire detection
+```
 
-🌐 Web Dashboard
-
-Colorful gradient background 🌈
-
-White sensor box with all values neatly displayed
-
-Real-time values for:
-
-🌡 Temperature
-
-💧 Humidity
-
-💨 Smoke
-
-⚗ Gas
-
-🔥 Flame
-
-When fire/smoke/gas is detected →
-⚠️ Status changes to ALERT + buzzer starts beeping.
-
-🔔 Smart Buzzer Logic
-
-✅ Safe → Buzzer OFF
-
-⚠️ Fire/Smoke/Gas Detected → Buzzer ON
-
+Sample buzzer logic:
+```cpp
 if (smokeValue > smokeMargin || gasValue > gasMargin || fireValue < fireMargin) {
-    digitalWrite(buzzerPin, HIGH); // Turn buzzer ON
+    digitalWrite(buzzerPin, HIGH); // ON
 } else {
-    digitalWrite(buzzerPin, LOW);  // Turn buzzer OFF
+    digitalWrite(buzzerPin, LOW);  // OFF
 }
+```
 
-📊 Adjustable Thresholds
+---
 
-Customize margins inside the code:
+# ✅ Future Improvements
 
-const int smokeMargin = 200; // for smoke detection
-const int gasMargin   = 260; // for gas detection
-const int fireMargin  = 300; // for fire detection
+- 📱 Alerts via Telegram / WhatsApp
+- ☁️ Push data to cloud (Firebase, MQTT, ThingsBoard)
+- 📧 Email/SMS notifications for remote safety
+- 🔋 Battery + Solar power for backup
 
-📷 Dashboard Example
+---
+
+# 📷 Dashboard Example
+
+```
 -------------------------------------------------
 | 🔥 IoT Fire Alarm Dashboard                   |
 |                                               |
@@ -121,13 +129,15 @@ const int fireMargin  = 300; // for fire detection
 | ⚗ Gas:   380 [✅ Clean]                       |
 | 🔥 Fire: ✅ No Fire                           |
 -------------------------------------------------
+```
 
-✅ Future Improvements
+---
 
-📱 Send alerts via Telegram / WhatsApp
+## 👤 Author
 
-☁️ Push data to cloud (Firebase, MQTT, ThingsBoard)
+- **Name:** Rande Vu
+- **GitHub:** [@thanhsyou2193-sudo](https://github.com/thanhsyou2193-sudo)
 
-📧 Email/SMS notifications for remote safety
+---
 
-🔋 Battery + Solar power for backup
+# **Stay safe with real-time fire monitoring!**
