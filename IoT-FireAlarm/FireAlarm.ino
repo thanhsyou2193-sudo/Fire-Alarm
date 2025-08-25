@@ -121,7 +121,7 @@ void handleData() {
 
   String smoke_status = (smokeValue > smokeBaseline + smokeMargin) ? "⚠️ Detected" : "✅ Clean";
   String gas_status   = (gasValue   > gasBaseline   + gasMargin)   ? "⚠️ Detected" : "✅ Clean";
-  String fire_status  = (fireValue < 300) ? "🔥 Fire Detected!" : "✅ No Fire";
+  String fire_status  = (fireValue < 2000) ? "🔥 Fire Detected!" : "✅ No Fire";
 
   // Control Buzzer
   if (smoke_status.indexOf("⚠️") >= 0 || gas_status.indexOf("⚠️") >= 0 || fire_status.indexOf("🔥") >= 0) {
